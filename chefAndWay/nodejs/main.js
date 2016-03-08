@@ -47,6 +47,7 @@
 
         if(rootIndex+1 >= aStreets.length){
           console.log(aStreets[rootIndex]);
+          //printpath here
           return;  
         } 
 
@@ -57,7 +58,9 @@
 
             if( distance >= 1 && distance <= k ){
                console.log(aStreets[rootIndex]);
+               //add to path here
                pathDepthFirst( aStreets, k, nextIndex, aPaths );
+               //pop off path here
             }
         }
 
