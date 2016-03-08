@@ -40,14 +40,18 @@
             k:2,
             aStreets:[1,2,3,4]
         },
-        aPaths = [];
+        MODULO = 1000000007;
     
-    function pathDepthFirst( aStreets, k, rootIndex, aPaths ){
+    function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, aAllProducts ){
         var aLocal = [];
 
         if(rootIndex+1 >= aStreets.length){
-          console.log(aStreets[rootIndex]);
-          //printpath here
+          aCurrentPath.push( aStreets[rootIndex] );
+          nProduct *= aStreets[rootIndex];
+          aAllProducts.push(nProduct%MODULO);
+          console.log( aCurrentPath.join(',') + '= ' + (nProduct%MODULO) );
+          aCurrentPath.pop();
+          nProduct /= aStreets[rootIndex];
           return;  
         } 
 
@@ -57,19 +61,27 @@
             distance = Math.abs(aStreets[rootIndex] - aStreets[nextIndex]);
 
             if( distance >= 1 && distance <= k ){
-               console.log(aStreets[rootIndex]);
-               //add to path here
-               pathDepthFirst( aStreets, k, nextIndex, aPaths );
-               //pop off path here
+               //console.log(aStreets[rootIndex]);
+               aCurrentPath.push(aStreets[rootIndex]);
+               nProduct *= aStreets[rootIndex];
+               pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, aAllProducts );
+               aCurrentPath.pop();
+               nProduct /= aStreets[rootIndex];
             }
         }
 
         return;
     }
+    
+    function paths( aStreets, k ){
+        var aAllProducts = []; //Make this a min heap
 
-    aPaths = pathDepthFirst( input.aStreets, input.k, 0, aPaths);
+        pathDepthFirst( aStreets, k, 0, [], 1, aAllProducts );
+        
+        return aAllProducts;
+    }
 
-    console.log(aPaths);
+    path( input.aStreets, input.k );
 })();
 
 /** Depth first traversal 
