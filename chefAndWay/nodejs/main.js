@@ -42,13 +42,13 @@
         },
         MODULO = 1000000007;
     
-    function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, aAllProducts ){
+    function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinProduct ){
         var aLocal = [];
 
         if(rootIndex+1 >= aStreets.length){
           aCurrentPath.push( aStreets[rootIndex] );
           nProduct *= aStreets[rootIndex];
-          aAllProducts.push(nProduct%MODULO);
+          if( nProduct < oMinProduct.nMinProduct ) oMinProduct.nMinProduct = nProduct;
           console.log( aCurrentPath.join(',') + '= ' + (nProduct%MODULO) );
           aCurrentPath.pop();
           nProduct /= aStreets[rootIndex];
@@ -64,7 +64,7 @@
                //console.log(aStreets[rootIndex]);
                aCurrentPath.push(aStreets[rootIndex]);
                nProduct *= aStreets[rootIndex];
-               pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, aAllProducts );
+               pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, oMinProduct );
                aCurrentPath.pop();
                nProduct /= aStreets[rootIndex];
             }
@@ -73,15 +73,15 @@
         return;
     }
     
-    function paths( aStreets, k ){
-        var aAllProducts = []; //Make this a min heap
+    function path( aStreets, k ){
+        var oMinProduct = { nMinProduct:Math.pow(10,5) };
 
-        pathDepthFirst( aStreets, k, 0, [], 1, aAllProducts );
+        pathDepthFirst( aStreets, k, 0, [], 1, oMinProduct );
         
-        return aAllProducts;
+        return oMinProduct.nMinProduct%MODULO;
     }
 
-    path( input.aStreets, input.k );
+    console.log(path( input.aStreets, input.k ));
 })();
 
 /** Depth first traversal 
