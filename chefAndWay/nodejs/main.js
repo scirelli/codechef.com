@@ -52,14 +52,31 @@ reader
 
 */
 (function(){
+	function randRange( min, max ){
+    	return ~~(Math.random()*max + min);
+    };
+	Array.prototype.shuffle = function(){
+		var me = this;
+		
+		function swap( i, j ){
+			var t = me[i];
+			me[i] = me[j];
+			me[j] = t;
+        }
+        for( var i=0; i<this.length; i++ ){
+        	 swap(i, randRange(0,this.length));
+        }
+    };
+
     var aStreets = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-        input = { 
-            numberOfStreets:aStreets.length,
-            k:2,
-            aStreets:aStreets
-        },
+        numberOfStreets = aStreets.length,
+        k = 2,
         MODULO = 1000000007;
-    
+
+    aStreets.shuffle();
+    aStreets = [2, 8, 7, 6, 15, 4, 9, 18, 14, 16, 10, 1, 17, 5, 20, 11, 3, 12, 13, 19];
+    console.log(aStreets);
+
     function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinProduct ){
         var aLocal = [],
             nOriginalProdoct = nProduct;
@@ -100,7 +117,7 @@ reader
         return oMinProduct.nMinProduct%MODULO;
     }
 
-    console.log(path( input.aStreets, input.k ));
+    console.log(path( aStreets, k ));
 })();
 
 /** Depth first traversal 
