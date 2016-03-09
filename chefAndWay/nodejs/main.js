@@ -33,40 +33,59 @@
          2 -> 4          |  2 * 4         = 8   <-- Minimal Path
     1 -> 3 -> 4          |  1 * 3 * 4     = 12
          3 -> 4          |  3 * 4         = 12
+
+var readline = require("readline");
+var reader = readline.createInterface({
+	input : process.stdin,
+	output : process.stdout
+});
+var numOfStreets, windowSize;
+var inputLine = 0;
+var logStreetWeights = [], trackWeights = [], selectedStreet = 0, currentStreetIndex, CONST_MOD = 1000000007;
+reader
+		.on(
+				"line",
+				function(data) {
+					data = data.replace(/\s+/g, ' ');// ensure there is
+														// single space between
+														// each input
+
 */
 (function(){
-    var input = { 
-            numberOfStreets:4,
+    var aStreets = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+        input = { 
+            numberOfStreets:aStreets.length,
             k:2,
-            aStreets:[1,2,3,4]
+            aStreets:aStreets
         },
         MODULO = 1000000007;
     
     function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinProduct ){
-        var aLocal = [];
+        var aLocal = [],
+            nOriginalProdoct = nProduct;
 
         if(rootIndex+1 >= aStreets.length){
           aCurrentPath.push( aStreets[rootIndex] );
-          nProduct *= aStreets[rootIndex];
+          nProduct = (nProduct*aStreets[rootIndex])%MODULO;
           if( nProduct < oMinProduct.nMinProduct ) oMinProduct.nMinProduct = nProduct;
-          console.log( aCurrentPath.join(',') + '= ' + (nProduct%MODULO) );
+          console.log( aCurrentPath.join(',') + '= ' + nProduct );
           aCurrentPath.pop();
-          nProduct /= aStreets[rootIndex];
+          nProduct = nProduct;
           return;  
         } 
 
-        for( var i=1, l=aStreets.length, distance=0,nextIndex=0; (rootIndex+i) < l; i++ ){
+        for( var i=1, l=aStreets.length,distance=0,nextIndex=0; (rootIndex+i) < l; i++ ){
             nextIndex = rootIndex + i;
 
             distance = Math.abs(aStreets[rootIndex] - aStreets[nextIndex]);
 
             if( distance >= 1 && distance <= k ){
-               //console.log(aStreets[rootIndex]);
                aCurrentPath.push(aStreets[rootIndex]);
-               nProduct *= aStreets[rootIndex];
+               nOriginalProdoct = nProduct;
+               nProduct *= (aStreets[rootIndex]%MODULO);
                pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, oMinProduct );
                aCurrentPath.pop();
-               nProduct /= aStreets[rootIndex];
+               nProduct = nOriginalProdoct;
             }
         }
 
@@ -74,11 +93,11 @@
     }
     
     function path( aStreets, k ){
-        var oMinProduct = { nMinProduct:Math.pow(10,5) };
+        var oMinProduct = { nMinProduct:Number.POSITIVE_INFINITY };
 
         pathDepthFirst( aStreets, k, 0, [], 1, oMinProduct );
         
-        return oMinProduct.nMinProduct%MODULO;
+        return oMinProduct.nMinProduct;
     }
 
     console.log(path( input.aStreets, input.k ));
