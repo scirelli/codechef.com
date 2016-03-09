@@ -9,15 +9,13 @@ var MODULO = 1000000007,
     k = 0,
     streets = [];
 
-function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinProduct ){
+function pathDepthFirst( aStreets, k, rootIndex, nProduct, oMinProduct ){
     var aLocal = [],
         nOriginalProdoct = nProduct;
 
     if(rootIndex+1 >= aStreets.length){
-      aCurrentPath.push( aStreets[rootIndex] );
-      nProduct = (nProduct*aStreets[rootIndex])%MODULO;
+      nProduct *= aStreets[rootIndex];
       if( nProduct < oMinProduct.nMinProduct ) oMinProduct.nMinProduct = nProduct;
-      aCurrentPath.pop();
       nProduct = nProduct;
       return;  
     } 
@@ -25,14 +23,12 @@ function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinPro
     for( var i=1, l=aStreets.length,distance=0,nextIndex=0; (rootIndex+i) < l; i++ ){
         nextIndex = rootIndex + i;
 
-        distance = Math.abs(aStreets[rootIndex] - aStreets[nextIndex]);
+        distance = aStreets[nextIndex] - aStreets[rootIndex];
 
         if( distance >= 1 && distance <= k ){
-           aCurrentPath.push(aStreets[rootIndex]);
            nOriginalProdoct = nProduct;
-           nProduct *= (aStreets[rootIndex]%MODULO);
-           pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, oMinProduct );
-           aCurrentPath.pop();
+           nProduct *= aStreets[rootIndex];
+           pathDepthFirst( aStreets, k, nextIndex, nProduct, oMinProduct );
            nProduct = nOriginalProdoct;
         }
     }
@@ -43,13 +39,12 @@ function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinPro
 function path( aStreets, k ){
     var oMinProduct = { nMinProduct:Number.POSITIVE_INFINITY };
 
-    pathDepthFirst( aStreets, k, 0, [], 1, oMinProduct );
+    pathDepthFirst( aStreets, k, 0, 1, oMinProduct );
     
-    return oMinProduct.nMinProduct;
+    return oMinProduct.nMinProduct%MODULO;
 }
 
 reader.on("line", function(data){
-
     data = data.replace(/\s+/g, ' ').replace('.','');// ensure there is single spaces between input
 
     if( linesRead%2 === 0 ){
@@ -57,11 +52,8 @@ reader.on("line", function(data){
         numberOfStreets = parseInt(data[0]);
         k = parseInt(data[1]);
     }else if( linesRead%2 === 1 ){
-        streets = data.split(' ');
-        for(var i=0; i<streets.length; i++){
-            streets[i] = parseInt(streets[i]);
-        }
-        
+        streets = data.split(" ").map(Number).slice(0,numberOfStreets);
+        console.log(streets); 
         console.log(path( streets, k ));
     }
     linesRead++;

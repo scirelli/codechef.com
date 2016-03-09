@@ -66,7 +66,7 @@ reader
 
         if(rootIndex+1 >= aStreets.length){
           aCurrentPath.push( aStreets[rootIndex] );
-          nProduct = (nProduct*aStreets[rootIndex])%MODULO;
+          nProduct *= aStreets[rootIndex];
           if( nProduct < oMinProduct.nMinProduct ) oMinProduct.nMinProduct = nProduct;
           console.log( aCurrentPath.join(',') + '= ' + nProduct );
           aCurrentPath.pop();
@@ -77,12 +77,12 @@ reader
         for( var i=1, l=aStreets.length,distance=0,nextIndex=0; (rootIndex+i) < l; i++ ){
             nextIndex = rootIndex + i;
 
-            distance = Math.abs(aStreets[rootIndex] - aStreets[nextIndex]);
+            distance = aStreets[nextIndex] - aStreets[rootIndex];
 
             if( distance >= 1 && distance <= k ){
                aCurrentPath.push(aStreets[rootIndex]);
                nOriginalProdoct = nProduct;
-               nProduct *= (aStreets[rootIndex]%MODULO);
+               nProduct *= aStreets[rootIndex];
                pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, oMinProduct );
                aCurrentPath.pop();
                nProduct = nOriginalProdoct;
@@ -97,7 +97,7 @@ reader
 
         pathDepthFirst( aStreets, k, 0, [], 1, oMinProduct );
         
-        return oMinProduct.nMinProduct;
+        return oMinProduct.nMinProduct%MODULO;
     }
 
     console.log(path( input.aStreets, input.k ));
