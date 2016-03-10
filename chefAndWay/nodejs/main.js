@@ -74,45 +74,48 @@ reader
         MODULO = 1000000007;
 
     aStreets.shuffle();
-    aStreets = [2, 8, 7, 6, 15, 4, 9, 18, 14, 16, 10, 1, 17, 5, 20, 11, 3, 12, 13, 19];
+    aStreets = [2, 8, 7, 6, 15, 4, 9, 18, 14, 16, 10, 1, 17, 5, 20, 11, 19, 12, 13, 3];
     console.log(aStreets);
 
-    function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, nProduct, oMinProduct ){
-        var aLocal = [],
-            nOriginalProdoct = nProduct;
+    function pathDepthFirst( aStreets, k, rootIndex, aCurrentPath, aAllPaths, nCurProduct, oMinProduct ){
+        var nPrevProduct = 1;
 
         if(rootIndex+1 >= aStreets.length){
-          aCurrentPath.push( aStreets[rootIndex] );
-          nProduct *= aStreets[rootIndex];
-          if( nProduct < oMinProduct.nMinProduct ) oMinProduct.nMinProduct = nProduct;
-          console.log( aCurrentPath.join(',') + '= ' + nProduct );
+          aCurrentPath.push( rootIndex );
+          nPrevProduct = nCurProduct;
+          nCurProduct *= aStreets[rootIndex];
+          if( nCurProduct < oMinProduct.nMinProduct ) oMinProduct.nMinProduct = nCurProduct;
+          aAllPaths.push(aCurrentPath.slice(0));
+          console.log( aCurrentPath.map(function(item){return aStreets[item];}).join(',') );
           aCurrentPath.pop();
-          nProduct = nProduct;
+          nCurProduct = nPrevProduct;
           return;  
         } 
 
-        for( var i=1, l=aStreets.length,distance=0,nextIndex=0; (rootIndex+i) < l; i++ ){
-            nextIndex = rootIndex + i;
+        for( var i=1, l=aStreets.length,distance=0,nextIndex=0; i < l; i++ ){
+            nextIndex = i;
+            
+            if( aCurrentPath.indexOf(nextIndex) !== -1 ) continue;
 
             distance = aStreets[nextIndex] - aStreets[rootIndex];
 
             if( distance >= 1 && distance <= k ){
-               aCurrentPath.push(aStreets[rootIndex]);
-               nOriginalProdoct = nProduct;
-               nProduct *= aStreets[rootIndex];
-               pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, nProduct, oMinProduct );
+               aCurrentPath.push(rootIndex);
+               nPrevProduct = nCurProduct;
+               nCurProduct *= aStreets[rootIndex];
+               pathDepthFirst( aStreets, k, nextIndex, aCurrentPath, aAllPaths, nCurProduct, oMinProduct );
                aCurrentPath.pop();
-               nProduct = nOriginalProdoct;
+               nCurProduct = nPrevProduct;
             }
         }
 
-        return;
+        return aAllPaths;
     }
     
     function path( aStreets, k ){
         var oMinProduct = { nMinProduct:Number.POSITIVE_INFINITY };
 
-        pathDepthFirst( aStreets, k, 0, [], 1, oMinProduct );
+        console.log(pathDepthFirst( aStreets, k, 0, [], [], 1, oMinProduct ));
         
         return oMinProduct.nMinProduct%MODULO;
     }
