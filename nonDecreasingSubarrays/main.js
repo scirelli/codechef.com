@@ -46,12 +46,14 @@ function require(){ return { createInterface:function(){ return {on:function(str
 }}}}}; 
 
 var readline = require("readline");
-var reader = readline.createInterface({});
+var reader = readline.createInterface({}),
+    inputLine = 0;
 
 reader.on( "line", function(data) {
-    data = data.replace(/\s+/g, ' ');// ensure there is
-                                        // single space between
-                                        // each input
+    data = data.replace(/\s+/g, ' ');// ensure there is single space between each input
+    
     if (inputLine === 0) {
     }
+
+    inputLine++;
 }
