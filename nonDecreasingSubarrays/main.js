@@ -1,3 +1,4 @@
+'use strict';
 /**
 * Given an array A1, A2, ..., AN, count the number of subarrays of array A which are non-decreasing.
 * A subarray A[i,j], where 1 <= i <= N is a sequence of integers Aj, Aj+1, ..., Aj
@@ -35,7 +36,8 @@
 *
 *  Explanation:
 *    Example case 1.
-*       All valid subarrays are A[1,1], A[1,2], A[2,2], A[3, 3], A[3, 4], A[4, 4]
+*       All valid subarrays are A[1,1], A[1,2], A[2,2], A[3, 3], A[3, 4], A[4, 4] 
+                                  [1] ,  [1,4],  [4]  ,   [2]  ,   [2,3],  [3]
 *    Note that singleton subarrays are identically non-decreasing
 *
 *  Only single subarray A[1, 1] is non-decreasing.
@@ -64,8 +66,7 @@ var readline = require("readline");
 var reader = readline.createInterface({}),
     nInputLine = 0,
     nTestCases = 0,
-    nArraySize  = 0,
-    nSubArrays = 0;
+    nArraySize  = 0;
 
 reader.on( "line", function(data) {
     nInputLine++;    
@@ -81,37 +82,33 @@ reader.on( "line", function(data) {
             nTestCases--;
             data = data.replace(/s+/,' ').split(' ').map(Number);
             console.log(data);
-            nSubArrays += countSubArrays(data);
+            console.log(countSubArrays(data));
         }
     }
 
     if( nTestCases <= 0){
         nInputLine = 0;
-        console.log(nSubArrays);
-        nSubArrays = 0;
         nTestCases = 0;
     }
 });
 
+//'1 4 2 3'
+//[1] ,  [1,4],  [4]  ,   [2]  ,   [2,3],  [3]
 function countSubArrays( aArray ){
-    var nSubArrays = 0;
+    var nSubArrays = 1,
+        nSubs=1;
 
-    for( var i=0, l=aArray.length, sub=[], num,tmp; i<l; i++){
+    for( var i=0, l=aArray.length,num,tmp,next; i<l; i++){
         num = aArray[i];
-        tmp = sub.pop();
+        next = aArray[i+1];
 
-        if( tmp === undefined ){
-            sub.push(num);
-            continue;
-        }else if( tmp <= num ){
-            sub.push(tmp,num);
+        if( num <= next ){
+            nSubs++;
         }else{
-            sub.push(tmp);
-            nSubArrays += sub.length;
-            sub = [];
-            i-=2;
+            nSubArrays += nSubs;
+            nSubs=1;
         }
     }
-
+    
     return nSubArrays;
 };
