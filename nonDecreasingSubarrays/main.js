@@ -41,19 +41,77 @@
 *  Only single subarray A[1, 1] is non-decreasing.
 */
 function require(){ return { createInterface:function(){ return {on:function(str, fnc){
-    fnc("4 2");
-    fnc("2 8 7 6 15 4 9 18 14 16 10 1 17 5 20 11 19 12 13 3");
+    fnc('2');
+
+    fnc('4');
+    fnc('1 4 2 3');
+
+    fnc('1');
+    fnc('5');
+/*
+    fnc('4');
+    fnc('1 4 2 3');
+ 
+    fnc('1');
+    fnc('5');
+
+    fnc('1');
+    fnc('5');
+*/
 }}}}}; 
 
 var readline = require("readline");
 var reader = readline.createInterface({}),
-    inputLine = 0;
+    nInputLine = 0,
+    nTestCases = 0,
+    nArraySize  = 0,
+    nSubArrays = 0;
 
 reader.on( "line", function(data) {
-    data = data.replace(/\s+/g, ' ');// ensure there is single space between each input
+    nInputLine++;    
     
-    if (inputLine === 0) {
+    if( nInputLine === 1 ) {
+        data = parseInt(data.replace(' ', ''));
+        nTestCases = data;
+    }else if( nInputLine > 1 ){
+        if(nInputLine%2 === 0){
+            data = parseInt(data.replace(/ /g, ''));
+            nArraySize = data;
+        }else if( nInputLine%2 === 1){
+            nTestCases--;
+            data = data.replace(/s+/,' ').split(' ').map(Number);
+            console.log(data);
+            nSubArrays += countSubArrays(data);
+        }
     }
 
-    inputLine++;
-}
+    if( nTestCases <= 0){
+        nInputLine = 0;
+        console.log(nSubArrays);
+        nSubArrays = 0;
+        nTestCases = 0;
+    }
+});
+
+function countSubArrays( aArray ){
+    var nSubArrays = 0;
+
+    for( var i=0, l=aArray.length, sub=[], num,tmp; i<l; i++){
+        num = aArray[i];
+        tmp = sub.pop();
+
+        if( tmp === undefined ){
+            sub.push(num);
+            continue;
+        }else if( tmp <= num ){
+            sub.push(tmp,num);
+        }else{
+            sub.push(tmp);
+            nSubArrays += sub.length;
+            sub = [];
+            i-=2;
+        }
+    }
+
+    return nSubArrays;
+};
