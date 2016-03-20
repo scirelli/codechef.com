@@ -46,6 +46,29 @@
 *       Only single subarray A[1, 1] is non-decreasing.
 *                               [5]
 */
+Math.randRange = function( min, max ){
+    return ~~(Math.random()*max + min);
+};
+Array.prototype.shuffle = function(){
+    var me = this;
+
+    function swap( i, j ){
+        var t = me[i];
+        me[i] = me[j];
+        me[j] = t;
+    }
+    for( var i=0; i<this.length; i++ ){
+         swap(i, Math.randRange(0,this.length));
+    }
+    return me;
+};
+Array.prototype.fill = function(){
+    var self = this;
+    for( var i=0,l=self.length; i<l; i++ ){
+        self[i] = i;
+    }
+    return self;
+}
 function require(){ return { createInterface:function(){ return {on:function(str, fnc){
     fnc('5');
 
@@ -60,9 +83,11 @@ function require(){ return { createInterface:function(){ return {on:function(str
  
     fnc('2');
     fnc('1 4');
-
-    fnc('3');
-    fnc('1 2 3');
+    
+    var a = new Array(Math.pow(10,5));
+    a.fill().shuffle();
+    fnc( a.length + '' );
+    fnc( a.join(' ') );
 }}}}};
 var process = {stdin:'', stdout:'' };
 
@@ -73,7 +98,8 @@ var reader = readline.createInterface({
     }),
     nInputLine = 0,
     nTestCases = 0,
-    nArraySize  = 0;
+    nArraySize  = 0,
+    ctr = [];
 
 reader.on( "line", function(data) {
     nInputLine++;    
@@ -86,10 +112,10 @@ reader.on( "line", function(data) {
             data = parseInt(data.replace(/ /g, ''));
             nArraySize = data;
         }else if( nInputLine%2 === 1){
-            nTestCases--;
             data = data.replace(/s+/,' ').split(' ').map(Number);
             //console.log(data);
-            console.log(countSubArrays(data));
+            console.log(countSub(data));
+            nTestCases--;
         }
     }
 
@@ -102,53 +128,17 @@ reader.on( "line", function(data) {
 //'1 4 2 3'
 //'4 3 2 1'
 //[1] ,  [1,4],  [4]  ,   [2]  ,   [2,3],  [3]
-function countSubArrays( aArray ){
-    var nSubs=0;
+function countSub ( arr ){
+   var ctr = 1;
 
-    for( var i=0, cur=0, next=0, end=aArray.length,start=0; i<end; i++){
-        cur = aArray[i];
-        next = aArray[i+1];
-        if( next === undefined || cur > next ){
-            nSubs += ((i-start)+1) > 1 ? 3 : 1;
-            start = i+1;
+   for( var index=1, l=arr.length, k=1; index<l; index++ ){
+        if( arr[index] >= arr[index-1] ){
+            ctr += ++k;
+        }else{
+            k = 1;
+            ctr++;
         }
     }
-    
-    return nSubs;
-};
 
-/* C++ accepted answer
-#include <iostream>
- 
-unsigned long long ctr[5];
-using namespace std;
-void countsub(unsigned long long*,unsigned int,unsigned long long*,int t);
-int main()
-{
-    ios_base::sync_with_stdio(false);
-  unsigned int n;int t;
-  cin>>t;
-  for(int i=0;i<t;++i)
-  {
-  cin>>n;
-  unsigned long long* arr=new unsigned long long[n];
-  for(unsigned int i=0;i<n;++i)
-    cin>>arr[i];
-  countsub(arr,n,ctr,i);
-  }
-  for(int i=0;i<t;++i)
-    cout<<ctr[i]<<endl;
-    return 0;
+    return ctr;
 }
-void countsub(unsigned long long* arr,unsigned int n,unsigned long long*,int t)
-{
-    unsigned int j=1;unsigned long long k=1;
-    ctr[t]=1;
-    while(j<n)
-    {
-        if(arr[j]>=arr[j-1])
-            {ctr[t]+=++k;++j;}
-        else {j++;k=1;++ctr[t];}
-    }
-}
-*/
