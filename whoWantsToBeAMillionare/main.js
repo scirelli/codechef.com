@@ -74,7 +74,62 @@ Array.prototype.fill = function(){
         self[i] = i;
     }
     return self;
-}
+};
+
+(function(){
+     function right( i ){
+        return 2*i+2;
+    };
+    function left( i ){
+        return 2*i+1;
+    };
+    function parent( i ){
+        return Math.floor( (i-1)/2 );
+    };
+    function swap( array, a, b ){
+        var tmp = 0;
+        tmp = array[a];
+        array[a] = array[b];
+        array[b] = tmp;
+    };
+ 
+    function maxHeapify( a, i ){//O(log(n))
+        var lft  = left(i),
+            rght = right(i),
+            largest = i;
+ 
+        if( lft < a.length && a[lft] > a[largest] ){
+            largest = lft;
+        }
+        if( rght < a.length && a[rght] > a[largest] ){
+            largest = rght;
+        }
+        if( largest != i ){
+            swap(a, i, largest );
+            maxHeapify( a, largest );
+        }
+    };
+    
+    function buildMaxHeap( array ){
+        for( var i=Math.floor((array.length-1)/2); i>=0; i-- ){
+            maxHeapify(array, i);
+        }
+    };
+    
+    Array.prototype.maxheap = function(){
+        var self = this;
+        buildMaxHeap(self);
+        return self;
+    };
+
+    Array.prototype.maxheapPop = function(){
+        var max = this[0];
+        this[0] = this.pop();
+        maxHeapify(this,0);
+        return max;
+    };
+})();
+
 function require(){ return { createInterface:function(){ return {on:function(str, fnc){
     fnc('3');
 
@@ -124,6 +179,8 @@ reader.on( "line", function(data) {
         aChefsAnswers = data.replace(' ', '').split('');
     }else if( nInputLine === 5 ){
         aWinnings = data.replace('  ', '').split(' ').map(Number);
+        
+        greatestWinnings( nNumberOfQuestions, aCorrectAnswers, aChefsAnswers, aWinnings );
 
         nInputLine = 1;
         nTestCases--;
@@ -135,3 +192,21 @@ reader.on( "line", function(data) {
     }
 });
 
+function greatestWinnings( nNumberOfQuestions, aCorrectAnswers, aChefsAnswers, aWinnings ){
+    var nChefsCorrectAnswers = 0,
+        maxHeapWinnings = aWinnings.slice(0).maxheap();
+     
+    console.log(maxHeapWinnings.maxheapPop());
+    console.log(maxHeapWinnings.maxheapPop());
+    console.log(maxHeapWinnings.maxheapPop());
+    console.log(maxHeapWinnings.maxheapPop());
+    console.log(maxHeapWinnings.maxheapPop());
+    console.log(maxHeapWinnings.maxheapPop());
+
+    for( var i=0; i<nNumberOfQuestions; i++ ){
+        if( aChefsAnswers[i] === aCorrectAnswers[i] ){
+            nChefsCorrectAnswers++;
+        }
+    }
+    if( nChefsCorrectAnswers === nNumberOfQuestions ) return aWinnings.pop();
+}
