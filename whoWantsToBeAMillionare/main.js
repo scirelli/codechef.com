@@ -140,7 +140,6 @@ reader.on( "line", function(data) {
 
 function greatestWinnings( nNumberOfQuestions, aCorrectAnswers, aChefsAnswers, aWinnings ){
     var nChefsCorrectAnswers = 0,
-        maxHeapWinnings = aWinnings.slice(0).maxheap(),
         currentMaxWinnings = aWinnings[0];
     
     for( var i=0; i<nNumberOfQuestions; i++ ){
