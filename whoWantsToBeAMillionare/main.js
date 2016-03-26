@@ -107,7 +107,7 @@ var reader = readline.createInterface({
     nNumberOfQuestions = 0,
     aCorrectAnswers = [],
     aCorrectAnswers = [],
-    aChefsAnswers   = [];
+    aChefsAnswers   = [],
     aWinnings       = [];
     ctr = [];
 
