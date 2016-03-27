@@ -112,21 +112,17 @@ reader.on( "line", function(data) {
 function alternatingSubArrays( aArray ){
     var output = "";
     
-    for( var pos=0, l=aArray.length; pos<l; pos++ ){
-        for( var i=pos,count=1, cur,next; i<l; i++ ){
-            cur = aArray[i];
-            next = aArray[i+1];
-            
-            if( next === undefined ){
-                output += count + ' ';
-                break;
+    for( var i=0, l=aArray.length,count=1, cur,next; i<l; i++ ){
+        cur = aArray[i];
+        next = aArray[i+1];
+
+        if( cur ^ next && next !== undefined ){
+            count++;
+        }else{
+            for( var o=count; o>0; o-- ){
+                output += o + ' ';
             }
-            if( cur ^ next ){
-                count++;
-            }else{
-                output += count + ' ';
-                break;
-            }
+            count = 1;
         }
     }
 
