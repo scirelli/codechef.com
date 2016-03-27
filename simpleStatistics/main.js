@@ -13,10 +13,10 @@ For each test case, output a single line containing the average value after remo
 Your answer will be considered correct, in case it has absolute or relative error, not exceeding 10-6.
 Constraints
 
-1 = T = 100
-1 = N = 104
-0 = 2K < N
--106 = Ai = 106
+1 ≤ T ≤ 100
+1 ≤ N ≤ 104
+0 ≤ 2K < N
+-106 ≤ Ai ≤ 106
 Subtasks
 
 Subtask #1 (50 points): K = 0
@@ -119,6 +119,19 @@ reader.on( "line", function(data) {
 });
 
 function simpleStat(aTestArray, nRemoveCount ){
+    var sorted = aTestArray.slice(0).sort(function(a,b){return a-b;}),
+        sum = 0;
 
+    for( var i=0, l=aTestArray.length-1; i<nRemoveCount; i++ ){
+        aTestArray[aTestArray.indexOf(sorted[i])] = 0;
+        aTestArray[aTestArray.indexOf(sorted[l-i])] = 0;
+    }
+
+    for( var i=0, l=aTestArray.length; i<l; i++ ){
+        sum += aTestArray[i];
+    }
+    if( sum ){
+        sum /= aTestArray.length - (2*nRemoveCount);
+    }
+    console.log(sum);
 }
-
