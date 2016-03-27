@@ -1,6 +1,6 @@
 /**
 There's an array A consisting of N non-zero integers A1..N. A subarray of A is called alternating if any two adjacent elements in it have different signs (i.e. one of them should be negative and the other should be positive).
-For each x from 1 to N, compute the length of the longest alternating subarray that starts at x - that is, a subarray Ax..y for the maximum possible y = x. The length of such a subarray is y-x+1.
+For each x from 1 to N, compute the length of the longest alternating subarray that starts at x - that is, a subarray Ax..y for the maximum possible y ≥ x. The length of such a subarray is y-x+1.
 Input
 
 The first line of the input contains an integer T - the number of test cases.
@@ -11,9 +11,9 @@ Output
 For each test case, output one line with N space-separated integers - the lengths of the longest alternating subarray starting at x, for each x from 1 to N.
 Constraints
 
-1 = T = 10
-1 = N = 10^5
--10^9 = Ai = 10^9
+1 ≤ T ≤ 10
+1 ≤ N ≤ 10^5
+-10^9 ≤ Ai ≤ 10^9
 Example
 
 Input:
@@ -95,8 +95,7 @@ reader.on( "line", function(data) {
         nSizeOfTestCase = parseInt(data);
     }else if( nInputLine === 3 ){
         aTestArray = data.split(' ').map(function(a){ return parseInt(a) >= 0 ? 1 : 0; });
-        console.log(aTestArray);
-
+       
         alternatingSubArrays(aTestArray);
 
         nInputLine = 1;
@@ -111,6 +110,25 @@ reader.on( "line", function(data) {
 
 //Use XOR
 function alternatingSubArrays( aArray ){
+    var output = "";
+    
+    for( var pos=0, l=aArray.length; pos<l; pos++ ){
+        for( var i=pos,count=1, cur,next; i<l; i++ ){
+            cur = aArray[i];
+            next = aArray[i+1];
+            
+            if( next === undefined ){
+                output += count + ' ';
+                break;
+            }
+            if( cur ^ next ){
+                count++;
+            }else{
+                output += count + ' ';
+                break;
+            }
+        }
+    }
 
+    console.log(output.trim());
 }
-
