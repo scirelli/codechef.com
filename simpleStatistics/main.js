@@ -120,11 +120,22 @@ reader.on( "line", function(data) {
 
 function simpleStat(aTestArray, nRemoveCount ){
     var sorted = aTestArray.slice(0).sort(function(a,b){return a-b;}),
-        sum = 0;
+        sum = 0,
+        hash = {};
+    
+    for( var i=0, l=aTestArray.length,itm; i<l; i++ ){
+        itm = aTestArray[i];
+
+        if( hash[itm] !== undefined ){
+            hash[itm].push(i);
+        }else{
+            hash[itm] = [i];
+        }
+    }
 
     for( var i=0, l=aTestArray.length-1; i<nRemoveCount; i++ ){
-        aTestArray[aTestArray.indexOf(sorted[i])] = 0;
-        aTestArray[aTestArray.indexOf(sorted[l-i])] = 0;
+        aTestArray[hash[sorted[i]].pop()] = 0;
+        aTestArray[hash[sorted[l-i]].pop()] = 0;
     }
 
     for( var i=0, l=aTestArray.length; i<l; i++ ){
