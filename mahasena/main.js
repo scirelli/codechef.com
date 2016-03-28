@@ -1,81 +1,166 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @scirelli
- Unwatch 1
-  Star 0
- Fork 0 scirelli/codechef.com
- Code  Issues 0  Pull requests 0  Wiki  Pulse  Graphs  Settings
-codechef.com/mahasena/ 
-main.js
-   or cancel
-    
- Edit file    Preview changes
-
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
 /**
 Kattapa, as you all know was one of the greatest warriors of his time. The kingdom of Maahishmati had never lost a battle under him (as army-chief), and the reason for that was their really powerful army, also called as Mahasena.
 Kattapa was known to be a very superstitious person. He believed that a soldier is "lucky" if the soldier is holding an even number of weapons, and "unlucky" otherwise. He considered the army as "READY FOR BATTLE" if the count of "lucky" soldiers is strictly greater than the count of "unlucky" soldiers, and "NOT READY" otherwise.
 Given the number of weapons each soldier is holding, your task is to determine whether the army formed by all these soldiers is "READY FOR BATTLE" or "NOT READY".
 Note: You can find the definition of an even number here.
 Input
+
 The first line of input consists of a single integer N denoting the number of soldiers. The second line of input consists of N space separated integers A1, A2, ..., AN, where Ai denotes the number of weapons that the ith soldier is holding.
 Output
+
 Generate one line output saying "READY FOR BATTLE", if the army satisfies the conditions that Kattapa requires or "NOT READY" otherwise (quotes for clarity).
 Constraints
+
 1 ≤ N ≤ 100
 1 ≤ Ai ≤ 100
 Example 1
+
 Input:
 1
 1
+
 Output:
 NOT READY
 Example 2
+
 Input:
 1
 2
-@scirelli
-Commit changes
 
+Output:
+READY FOR BATTLE
 
-Update main.js
+Example 3
 
-Add an optional extended description…
-  Commit directly to the master branch.
-  Create a new branch for this commit and start a pull request. Learn more about pull requests.
-Commit changes  Cancel
-Status API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Contact Help
+Input:
+4
+11 12 13 14
+
+Output:
+NOT READY
+
+Example 4
+
+Input:
+3
+2 3 4
+
+Output:
+READY FOR BATTLE
+Example 5
+
+Input:
+5
+1 2 3 4 5
+
+Output:
+NOT READY
+Explanation
+
+Example 1: For the first example, N = 1 and the array A = [1]. There is only 1 soldier and he is holding 1 weapon, which is odd. The number of soldiers holding an even number of weapons = 0, and number of soldiers holding an odd number of weapons = 1. Hence, the answer is "NOT READY" since the number of soldiers holding an even number of weapons is not greater than the number of soldiers holding an odd number of weapons.
+Example 2: For the second example, N = 1 and the array A = [2]. There is only 1 soldier and he is holding 2 weapons, which is even. The number of soldiers holding an even number of weapons = 1, and number of soldiers holding an odd number of weapons = 0. Hence, the answer is "READY FOR BATTLE" since the number of soldiers holding an even number of weapons is greater than the number of soldiers holding an odd number of weapons.
+Example 3: For the third example, N = 4 and the array A = [11, 12, 13, 14]. The 1st soldier is holding 11 weapons (which is odd), the 2nd soldier is holding 12 weapons (which is even), the 3rd soldier is holding 13 weapons (which is odd), and the 4th soldier is holding 14 weapons (which is even). The number of soldiers holding an even number of weapons = 2, and number of soldiers holding an odd number of weapons = 2. Notice that we have an equal number of people holding even number of weapons and odd number of weapons. The answer here is "NOT READY" since the number of soldiers holding an even number of weapons is not strictly greater than the number of soldiers holding an odd number of weapons.
+Example 4: For the fourth example, N = 3 and the array A = [2, 3, 4]. The 1st soldier is holding 2 weapons (which is even), the 2nd soldier is holding 3 weapons (which is odd), and the 3rd soldier is holding 4 weapons (which is even). The number of soldiers holding an even number of weapons = 2, and number of soldiers holding an odd number of weapons = 1. Hence, the answer is "READY FOR BATTLE" since the number of soldiers holding an even number of weapons is greater than the number of soldiers holding an odd number of weapons.
+Example 5: For the fifth example, N = 5 and the array A = [1, 2, 3, 4, 5]. The 1st soldier is holding 1 weapon (which is odd), the 2nd soldier is holding 2 weapons (which is even), the 3rd soldier is holding 3 weapons (which is odd), the 4th soldier is holding 4 weapons (which is even), and the 5th soldier is holding 5 weapons (which is odd). The number of soldiers holding an even number of weapons = 2, and number of soldiers holding an odd number of weapons = 3. Hence, the answer is "NOT READY" since the number of soldiers holding an even number of weapons is not greater than the number of soldiers holding an odd number of weapons.
+*/
+Math.randRange = function( min, max ){
+    return ~~(Math.random()*max + min);
+};
+Array.prototype.shuffle = function(){
+    var me = this;
+
+    function swap( i, j ){
+        var t = me[i];
+        me[i] = me[j];
+        me[j] = t;
+    }
+    for( var i=0; i<this.length; i++ ){
+         swap(i, Math.randRange(0,this.length));
+    }
+    return me;
+};
+Array.prototype.fill = function(){
+    var self = this;
+    for( var i=0,l=self.length; i<l; i++ ){
+        self[i] = i;
+    }
+    return self;
+};
+
+Array.prototype.fillAlpha = function(){
+    var self = this;
+
+    for( var i=0,l=self.length,a=97; i<l; i++ ){
+        self[i] = String.fromCharCode((i%26) + a);
+    }
+    return self;
+};
+
+function require(){ return { createInterface:function(){ return {on:function(str, fnc){
+fnc('1');
+fnc('2');
+//READY FOR BATTLE
+
+fnc('4');
+fnc('11 12 13 14');
+//NOT READY
+
+fnc('3');
+fnc('2 3 4');
+//READY FOR BATTLE
+
+fnc('5');
+fnc('1 2 3 4 5');
+//NOT READY
+}}}}};
+var process = {stdin:'', stdout:'' };
+//============================================================================================
+
+var readline = require("readline");
+var reader = readline.createInterface({
+        input : process.stdin,
+        output : process.stdout
+    }),
+    nInputLine = 0,
+    nSoldiers = 0,
+    aWeaponsCarried = [];
+
+reader.on( "line", function(data) {
+"use strict";
+    
+    nInputLine++;
+    
+    if( nInputLine === 1 ) {
+        data = parseInt(data.replace(' ', ''));
+        nSoldiers = parseInt(data);
+    }else if( nInputLine === 2 ){
+        aWeaponsCarried = data.split(' ').map(Number);
+
+        determine(aWeaponsCarried);
+
+        nInputLine = 0;
+    }
+});
+function isEven( n ){
+    if( n & 1 ){
+        return false;
+    }
+    return true;
+}
+function determine(aWeaponsCarried){
+    var evenCount = 0,
+        oddCount  = 0;
+
+    for(var i=0,l=aWeaponsCarried.length; i<l; i++){
+        if( isEven(aWeaponsCarried[i]) ){
+            evenCount++;
+        }
+    }
+    oddCount = aWeaponsCarried.length - evenCount;
+
+    if( evenCount > oddCount ){
+        console.log('READY FOR BATTLE');
+    }else{
+        console.log('NOT READY');
+    }
+}
