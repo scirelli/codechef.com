@@ -11,8 +11,8 @@ Output
 Generate one line output saying "READY FOR BATTLE", if the army satisfies the conditions that Kattapa requires or "NOT READY" otherwise (quotes for clarity).
 Constraints
 
-1 = N = 100
-1 = Ai = 100
+1 ≤ N ≤ 100
+1 ≤ Ai ≤ 100
 Example 1
 
 Input:
@@ -133,5 +133,9 @@ function determine(aWeaponsCarried){
     for(var i=0,l=aWeaponsCarried.length; i<l; i++){
         sum += aWeaponsCarried[i];
     }
-    
+    if( sum & 1 ){
+        console.log('NOT READY');
+    }else{
+        console.log('READY FOR BATTLE');
+    }
 }
