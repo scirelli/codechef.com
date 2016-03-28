@@ -1,35 +1,68 @@
-/*
-Little Malvika is very peculiar about colors. On her birthday, her mom wanted to buy balloons for decorating the house. So she asked her about her color preferences. The sophisticated little person that Malvika is, she likes only two colors — amber and brass. Her mom bought n balloons, each of which was either amber or brass in color. You are provided this information in a string s consisting of characters 'a' and 'b' only, where 'a' denotes that the balloon is amber, where 'b' denotes it being brass colored.
-When Malvika saw the balloons, she was furious with anger as she wanted all the balloons of the same color. In her anger, she painted some of the balloons with the opposite color (i.e., she painted some amber ones brass and vice versa) to make all balloons appear to be the same color. As she was very angry, it took her a lot of time to do this, but you can probably show her the right way of doing so, thereby teaching her a lesson to remain calm in difficult situations, by finding out the minimum number of balloons needed to be painted in order to make all of them the same color.
+/**
+Kattapa, as you all know was one of the greatest warriors of his time. The kingdom of Maahishmati had never lost a battle under him (as army-chief), and the reason for that was their really powerful army, also called as Mahasena.
+Kattapa was known to be a very superstitious person. He believed that a soldier is "lucky" if the soldier is holding an even number of weapons, and "unlucky" otherwise. He considered the army as "READY FOR BATTLE" if the count of "lucky" soldiers is strictly greater than the count of "unlucky" soldiers, and "NOT READY" otherwise.
+Given the number of weapons each soldier is holding, your task is to determine whether the army formed by all these soldiers is "READY FOR BATTLE" or "NOT READY".
+Note: You can find the definition of an even number here.
 Input
 
-The first line of input contains a single integer T, denoting the number of test cases.
-The first and only line of each test case contains a string s.
+The first line of input consists of a single integer N denoting the number of soldiers. The second line of input consists of N space separated integers A1, A2, ..., AN, where Ai denotes the number of weapons that the ith soldier is holding.
 Output
 
-For each test case, output a single line containing an integer — the minimum number of flips required.
+Generate one line output saying "READY FOR BATTLE", if the army satisfies the conditions that Kattapa requires or "NOT READY" otherwise (quotes for clarity).
 Constraints
 
-1 ≤ T ≤ 100
-1 ≤ n ≤ 100, where n denotes to the length of the string s.
-Example
+1 ≤ N ≤ 100
+1 ≤ Ai ≤ 100
+
+Example 1
+
+Input:
+1
+1
+
+Output:
+NOT READY
+Example 2
+
+Input:
+1
+2
+
+Output:
+READY FOR BATTLE
+
+Example 3
+
+Input:
+4
+11 12 13 14
+
+Output:
+NOT READY
+
+Example 4
 
 Input:
 3
-ab
-bb
-baaba
+2 3 4
 
 Output:
-1
-0
-2
+READY FOR BATTLE
+Example 5
+
+Input:
+5
+1 2 3 4 5
+
+Output:
+NOT READY
 Explanation
 
-In the first example,
-you can change amber to brass or brass to amber. In both the cases, both the balloons will have same colors. So, you will need to paint 1 balloon. So the answer is 1.
-In the second example,
-As the color of all the balloons is already the same, you don't need to paint any of them. So, the answer is 0.
+Example 1: For the first example, N = 1 and the array A = [1]. There is only 1 soldier and he is holding 1 weapon, which is odd. The number of soldiers holding an even number of weapons = 0, and number of soldiers holding an odd number of weapons = 1. Hence, the answer is "NOT READY" since the number of soldiers holding an even number of weapons is not greater than the number of soldiers holding an odd number of weapons.
+Example 2: For the second example, N = 1 and the array A = [2]. There is only 1 soldier and he is holding 2 weapons, which is even. The number of soldiers holding an even number of weapons = 1, and number of soldiers holding an odd number of weapons = 0. Hence, the answer is "READY FOR BATTLE" since the number of soldiers holding an even number of weapons is greater than the number of soldiers holding an odd number of weapons.
+Example 3: For the third example, N = 4 and the array A = [11, 12, 13, 14]. The 1st soldier is holding 11 weapons (which is odd), the 2nd soldier is holding 12 weapons (which is even), the 3rd soldier is holding 13 weapons (which is odd), and the 4th soldier is holding 14 weapons (which is even). The number of soldiers holding an even number of weapons = 2, and number of soldiers holding an odd number of weapons = 2. Notice that we have an equal number of people holding even number of weapons and odd number of weapons. The answer here is "NOT READY" since the number of soldiers holding an even number of weapons is not strictly greater than the number of soldiers holding an odd number of weapons.
+Example 4: For the fourth example, N = 3 and the array A = [2, 3, 4]. The 1st soldier is holding 2 weapons (which is even), the 2nd soldier is holding 3 weapons (which is odd), and the 3rd soldier is holding 4 weapons (which is even). The number of soldiers holding an even number of weapons = 2, and number of soldiers holding an odd number of weapons = 1. Hence, the answer is "READY FOR BATTLE" since the number of soldiers holding an even number of weapons is greater than the number of soldiers holding an odd number of weapons.
+Example 5: For the fifth example, N = 5 and the array A = [1, 2, 3, 4, 5]. The 1st soldier is holding 1 weapon (which is odd), the 2nd soldier is holding 2 weapons (which is even), the 3rd soldier is holding 3 weapons (which is odd), the 4th soldier is holding 4 weapons (which is even), and the 5th soldier is holding 5 weapons (which is odd). The number of soldiers holding an even number of weapons = 2, and number of soldiers holding an odd number of weapons = 3. Hence, the answer is "NOT READY" since the number of soldiers holding an even number of weapons is not greater than the number of soldiers holding an odd number of weapons.
 */
 Math.randRange = function( min, max ){
     return ~~(Math.random()*max + min);
@@ -65,13 +98,25 @@ Array.prototype.fillAlpha = function(){
 };
 
 function require(){ return { createInterface:function(){ return {on:function(str, fnc){
-    fnc('3');
-    
-    fnc('ab');
+fnc('1');
+fnc('1');
+//NOT READY
 
-    fnc('bb');
+fnc('1');
+fnc('2');
+//READY FOR BATTLE
 
-    fnc('baaba');
+fnc('4');
+fnc('11 12 13 14');
+//NOT READY
+
+fnc('3');
+fnc('2 3 4');
+//READY FOR BATTLE
+
+fnc('5');
+fnc('1 2 3 4 5');
+//NOT READY
 }}}}};
 var process = {stdin:'', stdout:'' };
 //============================================================================================
@@ -82,8 +127,8 @@ var reader = readline.createInterface({
         output : process.stdout
     }),
     nInputLine = 0,
-    nTestCases = 0,
-    string = '';
+    nSoldiers = 0,
+    aWeaponsCarried = [];
 
 reader.on( "line", function(data) {
 "use strict";
@@ -92,35 +137,35 @@ reader.on( "line", function(data) {
     
     if( nInputLine === 1 ) {
         data = parseInt(data.replace(' ', ''));
-        nTestCases = parseInt(data);
+        nSoldiers = parseInt(data);
     }else if( nInputLine === 2 ){
-        string = data.trim();
-       
-        console.log(flipBalloons(string));
+        aWeaponsCarried = data.split(' ').map(Number);
 
-        nInputLine = 1;
-        nTestCases--;
-    }
+        determine(aWeaponsCarried);
 
-    if( nTestCases <= 0){
         nInputLine = 0;
-        nTestCases = 0;
     }
 });
+function isEven( n ){
+    if( n & 1 ){
+        return false;
+    }
+    return true;
+}
+function determine(aWeaponsCarried){
+    var evenCount = 0,
+        oddCount  = 0;
 
-function flipBalloons(string){
-    var countOfAs = 0,
-        countOfBs = 0;
-
-    for( var i=0, l=string.length; i<l; i++ ){
-        if( string.charAt(i) === 'a' ){
-            countOfAs++;
+    for(var i=0,l=aWeaponsCarried.length; i<l; i++){
+        if( isEven(aWeaponsCarried[i]) ){
+            evenCount++;
         }
     }
-    countOfBs = string.length - countOfAs;
-    if( countOfAs >= countOfBs ){
-        return countOfBs;
-    }else{ 
-        return countOfAs;
+    oddCount = aWeaponsCarried.length - evenCount;
+
+    if( evenCount > oddCount ){
+        console.log('READY FOR BATTLE');
+    }else{
+        console.log('NOT READY');
     }
 }
