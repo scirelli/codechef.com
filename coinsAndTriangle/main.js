@@ -22,7 +22,7 @@ H   |   C                             *
 6   |   21
 
 
-C2 = C1 + H2
+C2 = C1 + H2  = 1 + H2
 C3 = C2 + H3  = C3 = 1 + H2 + H3
 C4 = C3 + H4  = 1 + H2 + H3 + H4  //Looks like a summation
 
